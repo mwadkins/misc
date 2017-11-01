@@ -1,5 +1,5 @@
 (setq user-full-name "Michele Adkins")
-(setq user-mail-address "michele.adkins@oracle.com")
+(setq user-mail-address "madkins@qti.qualcomm.com")
 
 ;; add my .emacs.d and ~/local/share to load-path
 (setq home-emacs-dir (concat (getenv "HOME") "/.emacs.d/"))
@@ -7,8 +7,10 @@
 (setq my-load-path home-emacs-dir)
 (setq load-path (append my-load-path load-path))
 
-(add-to-list `load-path "/Users/Michele/.emacs.d/php-mode-1.5.0")
+(add-to-list `load-path "/usr2/madkins/.emacs.d/php-mode-1.5.0")
 
+(setq custom-file "~/.emacs.d/custom.el")
+(load custom-file)
 
 ;; in a text editor, everything is (at least) text
 (setq default-major-mode 'text-mode)
