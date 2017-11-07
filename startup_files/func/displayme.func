@@ -1,0 +1,64 @@
+. ${HOME}/func/date.func
+DATE_STR=`date_str -d`
+
+function set_display
+{
+  #  use up the 'if[]' so all the active cases are 'else if []'
+  if [ "not" == "equal" ] ; then
+    echo "impossible" 1>&2
+  else if [ "${*}" == "" ] ; then
+    if [ "${DISPLAY}" == "" ] ; then
+      DISPLAY_VALUE="-e"
+    else
+      DISPLAY_HOST=$(echo ${DISPLAY} \
+      | awk -F: '{ print $1 }')
+      DISPLAY_NUM=$(echo ${DISPLAY} \
+      | awk -F: '{ print $2 }')
+      if [ "${DISPLAY_HOST}" == "" ] ; then
+        DISPLAY_HOST=${HOSTNAME}
+      fi
+      if [ "${DISPLAY_NUM}" == "" ] ; then
+        DISPLAY_NUM=":0.0"
+      fi
+    fi
+    DISPLAY_VALUE=${DISPLAY_HOST}:${DISPLAY_NUM}
+  else
+    DISPLAY_VALUE=$(echo "${*}" \
+    | awk '{ print $NF }')
+  fi
+  fi
+  if [ "${DISPLAY_VALUE}" == "-e" ] ; then
+    ${EDITOR} ${HOME}/.CURRENT.DISPLAY
+  else
+    #  record DISPLAY history
+    echo "${DISPLAY_VALUE}  #  ${DATE_STR}" > /tmp/{$USER}.cur_disp
+    echo -n "#" >> /tmp/{$USER}.cur_disp
+    cat ${HOME}/.CURRENT.DISPLAY >> /tmp/{$USER}.cur_disp
+    mv /tmp/{$USER}.cur_disp ${HOME}/.CURRENT.DISPLAY
+  fi
+}
+
+function displayme
+{
+  DISPLAY_FILE=${HOME}/.CURRENT.DISPLAY
+  if [ "not" == "equal" ] ; then
+    #  use up the 'if[]' so all the active cases are 'else if []'
+    echo "impossible" 1>&2
+  else if [ "${DISPLAY_FILE}" != "" ] ; then
+    CUR_DISPLAY=`cat ${DISPLAY_FILE} \
+      | awk -F\# '{ print $1 }' \
+      | awk '{ print $1 }' \
+      | head -1`
+    if [ "${CUR_DISPLAY}" != "" ] ; then
+      DISPLAY_TYPE="DISPLAY (from file):  ${CUR_DISPLAY}"
+      export DISPLAY=$CUR_DISPLAY
+    fi
+  else if [ "${DISPLAY}" != "" ] ; then
+    DISPLAY_TYPE="DISPLAY (from env):  ${DISPLAY}"
+  else
+    DISPLAY_TYPE="DISPLAY:  not set ) -;" 1>&2
+  fi
+  fi
+  fi
+  echo "${DISPLAY_TYPE}" 1>&2
+}

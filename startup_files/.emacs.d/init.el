@@ -21,11 +21,15 @@
 (global-font-lock-mode t)
 (show-paren-mode t)
 (transient-mark-mode t)
-(set-face-background 'default "#333333") ; .Xdefaults
-(set-face-foreground 'default "#cccccc") ; .Xdefaults
-(set-face-background 'cursor "#ffaa00") ; .Xdefaults
-(set-face-foreground 'cursor "#333333") ; .Xdefaults
-(setq x-pointer-foreground-color "#aaaaaa") ; .Xdefaults
+
+
+;;(set-face-background 'default "#333333") ;; .Xdefaults
+;;(set-face-foreground 'default "#cccccc") ;; .Xdefaults
+;;(set-face-background 'cursor "#ffaa00") ;; .Xdefaults
+;;(set-face-foreground 'cursor "#333333") ;; .Xdefaults
+
+(setq x-pointer-foreground-color "#aaaaaa") ;; .Xdefaults
+
 (set-face-background 'region "#33aaff")
 (set-face-foreground 'region "#eeeeee")
 (set-face-background 'show-paren-match-face "#666666")
@@ -33,6 +37,7 @@
 (set-face-background 'show-paren-mismatch-face "#dd0000")
 (set-face-foreground 'show-paren-mismatch-face "#333333")
 (set-face-foreground 'font-lock-warning-face "#dd0000")
+
 (set-face-foreground 'font-lock-preprocessor-face "#99cc33")
 (set-face-foreground 'font-lock-constant-face "#dd00dd")
 (set-face-foreground 'font-lock-comment-face "#888888")
@@ -41,9 +46,10 @@
 (set-face-foreground 'font-lock-function-name-face "#2277dd")
 (set-face-foreground 'font-lock-string-face "#33aaff")
 (set-face-foreground 'font-lock-variable-name-face "#00bb00")
-;(global-hl-line-mode t)
-;(set-face-background 'hl-line "#3a3a3a")
-;(set-face-foreground 'hl-line "#eeeeee")
+;;(global-hl-line-mode t)
+;;(set-face-background 'hl-line "#3a3a3a")
+;;(set-face-foreground 'hl-line "#eeeeee")
+
 (set-face-foreground 'highlight "#333333")
 (set-face-background 'highlight "#dddd00")
 (set-face-foreground 'isearch "#333333")

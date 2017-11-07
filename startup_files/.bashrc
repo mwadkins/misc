@@ -3,6 +3,8 @@
 # see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
 # for examples
 
+export HOSTNAME=`hostname`
+
 export PATH=/bin:/sbin:/usr/bin:/usr/sbin:/usr/local/bin:/usr/local/sbin
 
 if [ -f ~/.bashrc.work ]
@@ -13,12 +15,16 @@ else
     # HOME
     alias emacs='open -a /Applications/Emacs.app $1'
 
-    # note: keyboard mapping for esc-p auto completion is in .inputrc
-    
+    # note: keyboard mapping for esc-p auto completion goes in .inputrc
+    #"\ep": history-search-backward
+    #"\en": history-search-forward
+ 
     # custom prompt
     PS1="[\d \t \u@\h:\w ] $ "
 fi
 
+# auto complete for git commands
+. ~/git-completion.bash
 
 # don't put duplicate lines in the history. See bash(1) for more options
 export HISTCONTROL=ignoredups
@@ -59,12 +65,6 @@ if [ -f ~/.bash_aliases ]; then
     . ~/.bash_aliases
 fi
 
-# enable programmable completion features (you don't need to enable
-# this, if it's already enabled in /etc/bash.bashrc and /etc/profile
-# sources /etc/bash.bashrc).
-if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
-    . /etc/bash_completion
-fi
 
 # set file mode creation mask (group write=1)
 umask 2
@@ -72,4 +72,6 @@ umask 2
 # me first
 export PATH=${HOME}/bin:${PATH}
 
-
+if [ "$HOSTNAME" == "madkins-ubuntu" ]; then
+   alias emacs='/usr/bin/emacs'
+fi

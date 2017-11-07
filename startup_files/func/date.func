@@ -1,0 +1,126 @@
+#  multiple inclusion protection
+#if [ "$DATE_FUNC" == "" ] ; then
+export DATE_FUNC=loaded
+
+function date_string
+{
+if [ "$1" == "-d" ] ; then
+  DATE_STR=`date '+%Y.%m.%d'`
+else
+if [ "$1" == "-h" ] ; then
+  DATE_STR=`date '+%Y.%m.%d.%H'`
+else
+if [ "$1" == "-m" ] ; then
+  DATE_STR=`date '+%Y.%m.%d.%H.%M'`
+else
+if [ "$1" == "-s" ] ; then
+  DATE_STR=`date '+%Y.%m.%d.%H.%M.%S'`
+else
+  DATE_STR=`date '+%Y.%m.%d.%H.%M.%S.%N'`
+fi
+fi
+fi
+fi
+
+echo $DATE_STR
+}
+
+function date_str
+{
+  echo $(date_string $*)
+}
+
+function date_sum
+{
+  date_string -n | sum - | cut -d' ' -f1
+}
+
+function latest
+{
+local LATEST_DIRS=""
+local LATEST_FILES=""
+local LATEST_OPTS=""
+
+local LATEST_DATE_STR=`date_string -n`
+if [ "${LATEST_TMPDIR}" == "" ] ; then
+  LATEST_TMPDIR=/tmp/${USER}
+fi
+TMP_FILE=${LATEST_TMPDIR}/$$.${LATEST_DATE_STR}.latest
+if [ ! -d ${LATEST_TMPDIR} ] ; then
+  mkdir -p ${LATEST_TMPDIR}
+fi
+
+#  defaults
+REVERSE=""        #  ascending
+STAT_FORMAT="%z"  #  last changed
+while [ ! -d ${1} ]
+do
+
+  if [ "${1}" == "-a" ] ; then       #  access time
+    STAT_FORMAT="%x"
+    shift
+  else if [ "${1}" == "-m" ] ; then  #  modified time 
+    STAT_FORMAT="%y"
+    shift
+  else if [ "${1}" == "-r" ] ; then  #  descending
+    REVERSE=${1}
+    shift
+  fi
+  fi
+  fi
+done
+
+  #  walk the args and recursively report the changed time
+  rm -f ${TMP_FILE}
+  touch ${TMP_FILE}
+  for arg in ${@}
+  do
+    if [ -d ${arg} ] ; then
+      LATEST_DIRS="${LATEST_DIRS} ${arg}"
+    else if [ -f ${arg} ] ; then
+      LATEST_FILES="${LATEST_FILES} ${arg}"
+    else
+      LATEST_OPTS="${LATEST_OPTS} ${arg}"
+    fi
+    fi
+  done
+  #  stat 
+  for dir in ${LATEST_DIRS}
+  do
+    find ${dir} ${LATEST_OPTS} \
+      -exec echo -n "{} :  " \; \
+      -exec stat --format="%z" {} \; \
+    1>> ${TMP_FILE} \
+    2>/dev/null \
+    # end command
+  done
+  for file in ${LATEST_FILES}
+  do
+    echo -n "${file} :  " \
+    1>> ${TMP_FILE} \
+    2>/dev/null; \
+    stat --format=%z ${file} \
+    1>> ${TMP_FILE} \
+    2>/dev/null \
+    # end command
+  done
+  #  report the results
+  sort ${REVERSE} -t: -k2 ${TMP_FILE} \
+  # end command
+#  rm -f ${TMP_FILE}
+}
+
+function unique_name
+{
+string=`hostname`.`id -nu`.$$.`date_string -n`
+
+  if [ "${1}" == "-m" ] ; then
+    echo "$string" | md5sum - | cut -d' ' -f1
+    shift
+  else
+    echo "$string"
+  fi
+}
+#else
+#  export DATE_STR=$(date_string -d)
+#fi
