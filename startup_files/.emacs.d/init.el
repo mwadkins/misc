@@ -76,15 +76,13 @@
 ;; set the random number seed from current time and pid
 (random t)
 
-
 ;; php-mode
 (require 'php-mode)
 (add-to-list 'auto-mode-alist
   '("\\.php[345]?\\'\\|\\.inc\\'" . php-mode))
 
-
-
-
+;; make f9 the goto-line number key
+(global-set-key (kbd "<f9>") 'goto-line)    
 
 ;; enable mouse support
 (unless window-system

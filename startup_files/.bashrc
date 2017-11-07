@@ -11,6 +11,8 @@ if [ -f ~/.bashrc.work ]
 then
     # WORK
     . ~/.bashrc.work
+    PS1='\h:$(__git_ps1 " (%s)")>' 
+	
 else
     # HOME
     alias emacs='open -a /Applications/Emacs.app $1'
@@ -23,8 +25,6 @@ else
     PS1="[\d \t \u@\h:\w ] $ "
 fi
 
-# auto complete for git commands
-. ~/git-completion.bash
 
 # don't put duplicate lines in the history. See bash(1) for more options
 export HISTCONTROL=ignoredups
@@ -65,6 +65,13 @@ if [ -f ~/.bash_aliases ]; then
     . ~/.bash_aliases
 fi
 
+# helper functions
+if [ "${BASH_DEBUG}" == "true" ] ; then  echo "load func files" 1>&2; fi
+for file in ~/func/*.func
+do
+  . $file
+  if [ "${BASH_DEBUG}" == "true" ] ; then  echo "load ${file}" 1>&2; fi
+done
 
 # set file mode creation mask (group write=1)
 umask 2
@@ -75,3 +82,10 @@ export PATH=${HOME}/bin:${PATH}
 if [ "$HOSTNAME" == "madkins-ubuntu" ]; then
    alias emacs='/usr/bin/emacs'
 fi
+
+
+### BEGIN GIT2CC ###
+if [ -f /prj/qct/coredev/hexagon/sitelinks/arch/scripts/git2cc_user.new/bashrc ] ; then
+  source /prj/qct/coredev/hexagon/sitelinks/arch/scripts/git2cc_user.new/bashrc
+fi
+### END GIT2CC ###
