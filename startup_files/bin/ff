@@ -1,0 +1,5 @@
+#!/bin/bash
+
+
+echo "$0 - looking in $1 for (case insensitive) string=$2"
+find . -name "$1" -exec grep -in --with-filename $2 {} \;

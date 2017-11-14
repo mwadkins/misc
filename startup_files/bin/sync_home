@@ -1,0 +1,10 @@
+#!/usr/bin/perl
+
+print "running sync_home, this should be run from host: omnihome...";
+my $local = "/althome/austin/$ENV{USER}";
+my $remote = "/althome/sandiego/$ENV{USER}";
+
+
+my $cmd = "rsync -r -t -p -o -g -x -l -u --delete --specials  --exclude \".*\" --include \".ssh\"  --progress $local $remote";
+print "cmd=$cmd\n";
+system($cmd) or die "FAILED: $cmd $?\n";
