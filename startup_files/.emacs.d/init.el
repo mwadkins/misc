@@ -7,7 +7,6 @@
 (setq my-load-path home-emacs-dir)
 (setq load-path (append my-load-path load-path))
 
-(add-to-list `load-path "/usr2/madkins/.emacs.d/php-mode-1.5.0")
 
 (setq custom-file "~/.emacs.d/custom.el")
 (load custom-file)
@@ -16,8 +15,6 @@
 (setq default-major-mode 'text-mode)
 
 ;; font-lock setting
-(if (>= emacs-major-version 23)
-    (set-default-font "DejaVu Sans Mono-9")) ; .Xdefaults
 (global-font-lock-mode t)
 (show-paren-mode t)
 (transient-mark-mode t)
@@ -32,10 +29,6 @@
 
 (set-face-background 'region "#33aaff")
 (set-face-foreground 'region "#eeeeee")
-(set-face-background 'show-paren-match-face "#666666")
-(set-face-foreground 'show-paren-match-face "#ffffff")
-(set-face-background 'show-paren-mismatch-face "#dd0000")
-(set-face-foreground 'show-paren-mismatch-face "#333333")
 (set-face-foreground 'font-lock-warning-face "#dd0000")
 
 (set-face-foreground 'font-lock-preprocessor-face "#99cc33")
@@ -54,8 +47,6 @@
 (set-face-background 'highlight "#dddd00")
 (set-face-foreground 'isearch "#333333")
 (set-face-background 'isearch "#bbbb22")
-(set-face-foreground 'isearch-lazy-highlight-face "#333333")
-(set-face-background 'isearch-lazy-highlight-face "#bbbb66")
 (set-face-background 'modeline "#aaaaaa")
 (set-face-foreground 'modeline "#333333")
 (set-face-foreground 'link "#4466ff")
@@ -76,10 +67,6 @@
 ;; set the random number seed from current time and pid
 (random t)
 
-;; php-mode
-(require 'php-mode)
-(add-to-list 'auto-mode-alist
-  '("\\.php[345]?\\'\\|\\.inc\\'" . php-mode))
 
 ;; make f9 the goto-line number key
 (global-set-key (kbd "<f9>") 'goto-line)    
